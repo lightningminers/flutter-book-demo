@@ -1,17 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_book_demo/pages/stateless_widget_page.dart';
 import 'package:flutter_book_demo/pages/stateful_widget_page.dart';
+import 'package:flutter_book_demo/pages/hello_world_page.dart';
+import 'package:flutter_book_demo/pages/static_route_page.dart';
 
 void main() => runApp(MyApp());
 
 final pages = [
+  'HelloWorld',
   'StatelessWidget',
-  'StatefulWidget'
+  'StatefulWidget',
+  'StaticRoute'
 ];
 
 final pagesRouter = {
+  'HelloWorld':HelloWorldPage(),
   'StatelessWidget':StatelessWidgetPage(),
   'StatefulWidget':StatefulWidgetPage(),
+  'StaticRoute': null,
 };
 
 class MyApp extends StatefulWidget {
@@ -41,13 +47,19 @@ class MyAppState extends State<MyApp> {
                   child: RaisedButton(
                     child: Text(page),
                     onPressed: (){
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (BuildContext context){
-                            return pagesRouter[page];
-                          }
-                        )
-                      );
+                      switch (page) {
+                        case 'StaticRoute':
+                          Navigator.of(context).pushNamed('/StaticRoute');
+                          break;
+                        default:
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (BuildContext context){
+                                return pagesRouter[page];
+                              }
+                            )
+                          );
+                      }
                     },
                   ),
                 );
@@ -56,6 +68,11 @@ class MyAppState extends State<MyApp> {
           ),
         ),
       ),
+      routes: {
+        '/StaticRoute': (_){
+          return StaticRoutePage();
+        }
+      },
     );
   }
 }
